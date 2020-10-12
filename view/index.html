@@ -23,72 +23,74 @@
             .bot-status-engaged{
                 background-color: #ea96b4;
             }
-            #bot-house .bot-name,
-            #bot-house .bot-status {
+            .bot-name,
+            .bot-status {
                 height: 50px;
                 width: 150px;
                 display: flex;
             }
-            #bot-house .bot-name span,
-            #bot-house .bot-status span {
+            .bot span {
                 margin: auto;
             }
-            #bot-name-house > .bot-name{
+            .bot .bot-name{
                 border: 1px solid #565656;
                 border-top: none;
             }
-            #bot-name-house > .bot-name:first-child{
+            .bot .bot-status{
+                border: 1px solid #565656;
+                border-top: none;
+                border-bottom: none;
+            }
+            .bot:first-child .bot-name {
                 border-top-left-radius: 15px;
                 border: none;
                 border-bottom: 1px solid #565656;
             }
-            #bot-name-house > .bot-name:last-child{
+            .bot:first-child .bot-status {
+                border-bottom-left-radius: 15px;
+                border: none;
+            }
+            .bot:last-child .bot-name {
                 border-top-right-radius: 15px;
                 border: none;
                 border-bottom: 1px solid #565656;
             }
-            #bot-status-house > .bot-status{
-                border-right: 1px solid #565656;
-                border-left: 1px solid #565656;
-            }
-            #bot-status-house > .bot-status:first-child{
-                border: none;
-                border-bottom-left-radius: 15px;
-            }
-            #bot-status-house > .bot-status:last-child{
-                border: none;
+            .bot:last-child .bot-status {
                 border-bottom-right-radius: 15px;
+                border: none;
             }
         </style>
     </head>
     <body>
     <h1>
-        Click on the bot name to engage:
+        Click on the bot name to start:
     </h1>
 
-        <div class="flex-col" id="bot-house">
-            <div class="flex-row" id="bot-name-house">
-                <div class="bot-name">
-                    <span>bot 1</span>
+        <div class="flex-row">
+                <div class="bot flex-col">
+                    <div class="bot-name">
+                        <span>bot 1</span>
+                    </div>
+                    <div class="bot-status bot-status-free">
+                        <span>free</span>
+                    </div>
                 </div>
-                <div class="bot-name">
-                    <span>bot 2</span>
+                <div class="bot flex-col">
+                    <div class="bot-name">
+                        <span>bot 2</span>
+                    </div>
+                    <div class="bot-status bot-status-engaged">
+                        <span>engaged</span>
+                    </div>
                 </div>
-                <div class="bot-name">
-                    <span>bot 3</span>
+                <div class="bot flex-col">
+                    <div class="bot-name">
+                        <span>bot 3</span>
+                    </div>
+                    <div class="bot-status bot-status-free">
+                        <span>free</span>
+                    </div>
                 </div>
-            </div>
-            <div class="flex-row" id="bot-status-house">
-                <div class="bot-status bot-status-free">
-                    <span>free</span>
-                </div>
-                <div class="bot-status bot-status-engaged">
-                    <span>engaged</span>
-                </div>
-                <div class="bot-status bot-status-free">
-                    <span>free</span>
-                </div>
-            </div>
         </div>
 
     <script type="application/javascript">
