@@ -63,38 +63,35 @@
     </head>
     <body>
     <h1>
-        Click on the bot name to start:
+        Click on the bot to start:
     </h1>
 
-        <div class="flex-row">
-                <div class="bot flex-col">
-                    <div class="bot-name">
-                        <span>bot 1</span>
-                    </div>
-                    <div class="bot-status bot-status-free">
-                        <span>free</span>
-                    </div>
-                </div>
-                <div class="bot flex-col">
-                    <div class="bot-name">
-                        <span>bot 2</span>
-                    </div>
-                    <div class="bot-status bot-status-engaged">
-                        <span>engaged</span>
-                    </div>
-                </div>
-                <div class="bot flex-col">
-                    <div class="bot-name">
-                        <span>bot 3</span>
-                    </div>
-                    <div class="bot-status bot-status-free">
-                        <span>free</span>
-                    </div>
-                </div>
-        </div>
+        <div class="flex-row" id="bots-home"></div>
 
+    <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script type="application/javascript">
+        $(document).ready(function () {
+            function addBot(bot){
+                const $bot = $("<div>", {"class": "bot flex-col", "data-status": bot.status, "data-id": bot.id});
+                const $head = $("<div>", {"class": "bot-name"});
+                $head.append(`<span title="${bot.expertises}">Bot ${bot.name}<br> </span>`)
+                const $body = $("<div>", {"class": `bot-status bot-status-${bot.status === 'free' ? 'free' : 'engaged'}`});
+                $body.append(`<span> ${bot.status} </span>`)
+                $bot.append($head, $body)
 
+                $('#bots-home').append($bot)
+            }
+            $.ajax('http://localhost:4545/api/v1/bots')
+                .done(function (response) {
+                    debugger
+                    response.map(bot => addBot(bot))
+                    // debugger
+                    // console.log(response)
+                }).fail(function (response) {
+                    debugger
+                    console.log(response)
+                })
+        })
     </script>
     </body>
 </html>

@@ -11,6 +11,7 @@ export interface Bot {
     status: BotStatus;
     expertises: string[];
     answer: string;
+    name: string;
 }
 
 export class BotService implements OnModuleInit {
@@ -29,10 +30,11 @@ export class BotService implements OnModuleInit {
     async getBot(botId: string): Promise<Bot> {
         const dbBot = await this.collection.findOne({_id: new ObjectID(botId)});
         const bot: Bot = {
-            id: dbBot._id,
+            id: dbBot._id.toString(),
             expertises: dbBot.expertise,
             status: dbBot.status === 'free' ? BotStatus.available : BotStatus.taken,
-            answer: dbBot.answer
+            answer: dbBot.answer,
+            name: dbBot.name
         }
         return bot;
     }
@@ -42,10 +44,11 @@ export class BotService implements OnModuleInit {
         const dbBots = await this.collection.find().toArray()
         const bots: Bot[] = dbBots.map(dbBot => {
             return {
+                id: dbBot._id.toString(),
                 expertises: dbBot.expertise,
-                id: dbBot._id,
                 status: dbBot.status === 'free' ? BotStatus.available : BotStatus.taken,
-                answer: dbBot.answer
+                answer: dbBot.answer,
+                name: dbBot.name
             } as Bot
         })
         return bots;
