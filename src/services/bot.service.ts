@@ -54,11 +54,22 @@ export class BotService implements OnModuleInit {
         return bots;
     }
 
-    async engageBot(botId: string): Promise<void> {
-        const dbBot = await this.collection.findOneAndUpdate(({_id: new ObjectID(botId)}), {status: BotStatus.taken});
+    async engageBot(botId: string): Promise<Bot> {
+        const dbBot = (await this.collection.findOneAndUpdate({_id: new ObjectID(botId)},
+            {$set: {status: BotStatus.taken}},
+            {returnOriginal: false})).value;
+
+        const bot: Bot = {
+            id: dbBot._id.toString(),
+            expertises: dbBot.expertise,
+            status: dbBot.status === 'free' ? BotStatus.available : BotStatus.taken,
+            answer: dbBot.answer,
+            name: dbBot.name
+        }
+        return bot;
     }
 
     async disengageBot(botId: string): Promise<void> {
-        const dbBot = await this.collection.findOneAndUpdate(({_id: new ObjectID(botId)}), {status: BotStatus.available});
+        await this.collection.updateOne(({_id: new ObjectID(botId)}), {$set: {status: BotStatus.available}});
     }
 }

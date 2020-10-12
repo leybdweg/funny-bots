@@ -14,6 +14,9 @@
                 display: flex;
                 flex-direction: column;
             }
+            .hidden{
+                display: none;
+            }
             .bot-name{
                 background-color: #d7d7d7;
             }
@@ -63,30 +66,64 @@
     </head>
     <body>
     <h1>
-        Click on the bot to start:
+        Click on the bot to engage:
     </h1>
 
         <div class="flex-row" id="bots-home"></div>
+        <br>
+        <div class="flex-col initially-hidden hidden" id="bot-engagement" >
+            <label for="bot-expertises">/askforhelp</label>
+            <select id="bot-expertises" style="width: 200px"></select>
+        </div>
+
+        <p id="bot-help" class="initially-hidden hidden"></p>
+        <button id="bot-disengage" class="initially-hidden hidden">Disengage!</button>
 
     <script src="https://code.jquery.com/jquery-3.5.1.js" integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" crossorigin="anonymous"></script>
     <script type="application/javascript">
         $(document).ready(function () {
             function addBot(bot){
-                const $bot = $("<div>", {"class": "bot flex-col", "data-status": bot.status, "data-id": bot.id});
+                const $bot = $("<div>", {"class": "bot flex-col", "data-status": bot.status}); //, "data-id": bot.id});
                 const $head = $("<div>", {"class": "bot-name"});
                 $head.append(`<span title="${bot.expertises}">Bot ${bot.name}<br> </span>`)
                 const $body = $("<div>", {"class": `bot-status bot-status-${bot.status === 'free' ? 'free' : 'engaged'}`});
                 $body.append(`<span> ${bot.status} </span>`)
                 $bot.append($head, $body)
 
+                $bot.on('click', function (event){
+                    $.ajax({
+                        url: 'http://localhost:4545/api/v1/bots/' + bot.id,
+                        method: 'POST'
+                    }).done(function (response){
+                        $body.removeClass(`bot-status-free`).addClass('bot-status-engaged').find('span').text('engaged')
+                        const $botExpertises = $('#bot-expertises')
+                        $botExpertises.children().remove();
+                        $botExpertises.removeClass('hidden')
+                        $('#bot-engagement').removeClass('hidden')
+                        response.expertises.map(expertise => $botExpertises.append($(`<option value='${expertise}'>${expertise}</option>`)))
+                        $($botExpertises).on('change', function (event) {
+                            $.ajax(`http://localhost:4545/api/v1/bots/${bot.id}/help`).done(function (response){
+                                $("#bot-help, #bot-disengage").removeClass('hidden')
+                                $("#bot-help").text(response)
+                                $("#bot-disengage").on('click', function (event){
+                                    $.ajax({
+                                        url: `http://localhost:4545/api/v1/bots/${bot.id}/disengage`,
+                                        method: 'PUT'
+                                    }).done(function (response){
+                                        $('.initially-hidden').addClass('hidden')
+                                        debugger
+                                        $body.removeClass(`bot-status-engaged`).addClass('bot-status-free')
+                                    })
+                                })
+                            })
+                        })
+                    })
+                })
                 $('#bots-home').append($bot)
             }
             $.ajax('http://localhost:4545/api/v1/bots')
                 .done(function (response) {
-                    debugger
                     response.map(bot => addBot(bot))
-                    // debugger
-                    // console.log(response)
                 }).fail(function (response) {
                     debugger
                     console.log(response)

@@ -54,7 +54,7 @@ export class AppController {
         res.send(response.answer);
     }
 
-    @Delete('api/v1/bots/:botId')
+    @Put('api/v1/bots/:botId/disengage')
     async disengageBot(
         @Res() res: Response,
         @Req() req: Request,
