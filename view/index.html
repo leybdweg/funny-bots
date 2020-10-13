@@ -111,7 +111,8 @@
                                         method: 'PUT'
                                     }).done(function (response){
                                         $('.initially-hidden').addClass('hidden')
-                                        $body.removeClass(`bot-status-engaged`).addClass('bot-status-free').text('free')
+                                        $body.removeClass(`bot-status-engaged`).addClass('bot-status-free')
+                                        $body.find('span').text('free')
                                     })
                                 })
                             })
