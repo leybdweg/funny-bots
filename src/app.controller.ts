@@ -28,7 +28,6 @@ export class AppController {
         @Param() params: any
     ): Promise<void> {
         const response = await this.botService.getBot(params.botId);
-        console.log(response);
         res.json(response);
     }
 
@@ -39,7 +38,6 @@ export class AppController {
         @Param() params: any
     ): Promise<void> {
         const response = await this.botService.engageBot(params.botId);
-        console.log(response);
         res.json(response);
     }
 
@@ -50,7 +48,6 @@ export class AppController {
         @Param() params: any
     ): Promise<void> {
         const response = await this.botService.getBot(params.botId);
-        console.log(response.answer);
         res.send(response.answer);
     }
 

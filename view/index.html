@@ -111,8 +111,7 @@
                                         method: 'PUT'
                                     }).done(function (response){
                                         $('.initially-hidden').addClass('hidden')
-                                        debugger
-                                        $body.removeClass(`bot-status-engaged`).addClass('bot-status-free')
+                                        $body.removeClass(`bot-status-engaged`).addClass('bot-status-free').text('free')
                                     })
                                 })
                             })
@@ -125,7 +124,6 @@
                 .done(function (response) {
                     response.map(bot => addBot(bot))
                 }).fail(function (response) {
-                    debugger
                     console.log(response)
                 })
         })
