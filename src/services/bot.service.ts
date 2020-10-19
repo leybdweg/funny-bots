@@ -19,7 +19,7 @@ export class BotService implements OnModuleInit {
     private dbConnection: MongoClient;
 
     constructor() {
-        this.dbConnection = new MongoClient(`mongodb://zencity_bots:bot123@ds145325.mlab.com:45325/datahack`);
+        this.dbConnection = new MongoClient(process.env.DB_URL);
     }
 
     async onModuleInit(): Promise<void> {
